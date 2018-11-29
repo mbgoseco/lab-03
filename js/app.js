@@ -31,8 +31,8 @@ Animal.prototype.render = function() {
   }
 }
 
-Animal.readJSON = () => {
-  $.get('data/page-1.json', 'json')
+Animal.readJSON = (page) => {
+  $.get(page, 'json')
     .then(data => {
       data.forEach(obj => {
         Animal.allAnimals.push(new Animal(obj))
@@ -56,4 +56,24 @@ $('select').on('change', function() {
   }
 });
 
-$(() => Animal.readJSON())
+$('#page1').on('click', function() {
+  $('div').remove();
+  $('#page1').css('visibility', 'hidden');
+  $('#page2').css('visibility', 'visible');
+  $(() => Animal.readJSON('data/page-1.json'));
+  $('option:nth-child(1n+2)').remove();
+  Animal.allAnimals = [];
+  options = [];
+});
+
+$('#page2').on('click', function() {
+  $('div').remove();
+  $('#page2').css('visibility', 'hidden');
+  $('#page1').css('visibility', 'visible');
+  $(() => Animal.readJSON('data/page-2.json'));
+  $('option:nth-child(1n+2)').remove();
+  Animal.allAnimals = [];
+  options = [];
+});
+
+$(() => Animal.readJSON('data/page-1.json'));
