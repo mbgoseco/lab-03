@@ -3,8 +3,17 @@
   <head>
     <title>The Gallery of Horns</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script id ="photo-template" type="text/x-handlebars-template">
+      <div>
+        <h2>{{ title }}</h2>
+        <img src="{{ image_url }}" alt="{{ title }}" class="{{ keyword }}">
+        <figcaption>{{ description }}</figcaption>
+        <p>Horns: {{ horns }}</p>
+      </div>
+    </script>
     <link rel="stylesheet" href = "css/reset.css" />
     <link rel="stylesheet" href = "css/styles.css" />
+
   </head>
   <body>
     <header>
@@ -18,16 +27,14 @@
       <button id="page2">Page 2</button>
     </nav>
     <main>
-      <section id="photo-template">
-        <h2></h2>
-        <img src="" alt="" class="">
-        <figcaption></figcaption>
-        <p></p>
+      <section id="animals">
+        <!-- this is where the created template should input to -->
       </section>
     </main>
     <footer>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
       <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-      <script src = "js/app.js"></script>
+      <script src ="js/app.js"></script>
       &copy; 2018 Code Fellows
     </footer>
   </body>
