@@ -5,13 +5,13 @@ This project will refactor the existing website from lab 02 to handle multiple p
 
 ## Number and name of feature: Feature 1: Pagination
 
-Estimate of time needed to complete: 
+Estimate of time needed to complete: 1 hour
 
-Start time: 
+Start time: 9:05 AM
 
-Finish time: 
+Finish time: 10:00AM
 
-Actual time needed to complete: 
+Actual time needed to complete: 55 minutes
 
 
 ## Number and name of feature: Feature 2: Templating

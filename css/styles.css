@@ -7,16 +7,24 @@ body {
 }
 
 main {
+  width: 100%;
+  clear: both;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 div {
-  margin: 5px;
+  margin: 10px;
+  padding: 5px;
   font-size: 24px;
   width: 30%;
-  color: rgb(0, 158, 158)
+  color: rgb(0, 177, 177);
+  border: 2px solid aqua;
+  border-radius: 7px;
 }
 
 img {
@@ -39,4 +47,28 @@ h2 {
 
 p {
   color: goldenrod;
+}
+
+#page1 {
+  width: 150px;
+  height: 55px;
+  float: left;
+  visibility: hidden;
+  border-radius: 10px;
+  background-color: purple;
+  font-family: 'Modak', cursive;
+  color: rgb(0, 177, 177);
+  font-size: 30px;
+}
+
+#page2 {
+  width: 150px;
+  height: 55px;
+  float: right;
+  visibility: visible;
+  border-radius: 10px;
+  background-color: purple;
+  font-family: 'Modak', cursive;
+  color: rgb(0, 177, 177);
+  font-size: 30px;
 }
