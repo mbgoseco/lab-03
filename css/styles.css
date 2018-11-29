@@ -9,7 +9,7 @@ body {
 main {
   display: flex;
   flex-direction: row;
-  flex-direction: wrap;
+  flex-wrap: wrap;
 }
 
 div {
