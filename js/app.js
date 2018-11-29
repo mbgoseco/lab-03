@@ -1,5 +1,8 @@
 'use strict';
 
+let allAnimals = [];
+let options = [];
+
 function Animal(animal) {
   this.image_url = animal.image_url;
   this.title = animal.title;
@@ -8,41 +11,54 @@ function Animal(animal) {
   this.horns = animal.horns;
 }
 
-Animal.allAnimals = [];
-let options = [];
-
-Animal.prototype.render = function() {
-  $('main').append('<div class="clone"></div>');
-  let animalClone = $('div[class = "clone"]');
-  let animalHtml = $('#photo-template').html();
-  animalClone.html(animalHtml);
-
-  animalClone.find('h2').text(this.title);
-  animalClone.find('img').attr('src', this.image_url);
-  animalClone.find('img').attr('alt', this.title);
-  animalClone.find('img').addClass(this.keyword);
-  animalClone.find('figcaption').text(this.description);
-  animalClone.find('p').text(`Horns: ${this.horns}`);
-  animalClone.removeClass('clone');
-
-  if (options.indexOf(this.keyword) === -1) {
-    options.push(this.keyword);
-    $('select').append(`<option value="${this.keyword}">${this.keyword}</option>`);
-  }
+Animal.prototype.toHtml = function() {
+  //template from html doc
+  const $template = $('#photo-template').html();
+  // compile template to regular html
+  const $dataSource = Handlebars.compile($template);
+  // return the filled out template in the html
+  return $dataSource(this);
 }
+
+// Animal.prototype.render = function() {
+  // $('main').append('<div class="clone"></div>');
+  // let animalClone = $('div[class = "clone"]');
+  // let animalHtml = $('#photo-template').html();
+  // animalClone.html(animalHtml);
+
+  // animalClone.find('h2').text(this.title);
+  // animalClone.find('img').attr('src', this.image_url);
+  // animalClone.find('img').attr('alt', this.title);
+  // animalClone.find('img').addClass(this.keyword);
+  // animalClone.find('figcaption').text(this.description);
+  // animalClone.find('p').text(`Horns: ${this.horns}`);
+  // animalClone.removeClass('clone');
+
+  // render for the filter options still need to be hardcoded outside of handlebars
+//   if (options.indexOf(this.keyword) === -1) {
+//     options.push(this.keyword);
+//     $('select').append(`<option value="${this.keyword}">${this.keyword}</option>`);
+//   }
+// }
 
 Animal.readJSON = (page) => {
   $.get(page, 'json')
     .then(data => {
       data.forEach(obj => {
-        Animal.allAnimals.push(new Animal(obj))
+        allAnimals.push(new Animal(obj))
       })
     })
     .then(Animal.loadAnimals)
 }
 
 Animal.loadAnimals = () => {
-  Animal.allAnimals.forEach(animal => animal.render());
+  allAnimals.forEach(animal => {
+    $('#animals').append(animal.toHtml());
+    if (options.indexOf(animal.keyword) === -1) {
+      options.push(animal.keyword);
+      $('select').append(`<option value="${animal.keyword}">${animal.keyword}</option>`);
+    }
+  })
 }
 
 $('select').on('change', function() {
@@ -62,7 +78,7 @@ $('#page1').on('click', function() {
   $('#page2').css('visibility', 'visible');
   $(() => Animal.readJSON('data/page-1.json'));
   $('option:nth-child(1n+2)').remove();
-  Animal.allAnimals = [];
+  allAnimals = [];
   options = [];
 });
 
@@ -72,7 +88,7 @@ $('#page2').on('click', function() {
   $('#page1').css('visibility', 'visible');
   $(() => Animal.readJSON('data/page-2.json'));
   $('option:nth-child(1n+2)').remove();
-  Animal.allAnimals = [];
+  allAnimals = [];
   options = [];
 });
 

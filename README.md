@@ -20,9 +20,9 @@ Estimate of time needed to complete:  1 hour
 
 Start time: 10:15 AM
 
-Finish time: 
+Finish time: 11:25 AM
 
-Actual time needed to complete: 
+Actual time needed to complete: 1 hour 10 min
 
 
 ## Number and name of feature: Feature #3: Styling with Flexbox
