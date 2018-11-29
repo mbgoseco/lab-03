@@ -20,27 +20,6 @@ Animal.prototype.toHtml = function() {
   return $dataSource(this);
 }
 
-// Animal.prototype.render = function() {
-  // $('main').append('<div class="clone"></div>');
-  // let animalClone = $('div[class = "clone"]');
-  // let animalHtml = $('#photo-template').html();
-  // animalClone.html(animalHtml);
-
-  // animalClone.find('h2').text(this.title);
-  // animalClone.find('img').attr('src', this.image_url);
-  // animalClone.find('img').attr('alt', this.title);
-  // animalClone.find('img').addClass(this.keyword);
-  // animalClone.find('figcaption').text(this.description);
-  // animalClone.find('p').text(`Horns: ${this.horns}`);
-  // animalClone.removeClass('clone');
-
-  // render for the filter options still need to be hardcoded outside of handlebars
-//   if (options.indexOf(this.keyword) === -1) {
-//     options.push(this.keyword);
-//     $('select').append(`<option value="${this.keyword}">${this.keyword}</option>`);
-//   }
-// }
-
 Animal.readJSON = (page) => {
   $.get(page, 'json')
     .then(data => {
@@ -51,7 +30,73 @@ Animal.readJSON = (page) => {
     .then(Animal.loadAnimals)
 }
 
+Animal.readJSONtitle = () => {
+  $.get('data/page-1.json', 'json')
+    .then(data => {
+      data.forEach(obj => {
+        allAnimals.push(new Animal(obj))
+      })
+    });
+  $.get('data/page-2.json', 'json')
+    .then(data => {
+      data.forEach(obj => {
+        allAnimals.push(new Animal(obj))
+      })
+    })
+    .then(Animal.loadAnimalsTitle)
+}
+
+Animal.readJSONhorns = () => {
+  $.get('data/page-1.json', 'json')
+    .then(data => {
+      data.forEach(obj => {
+        allAnimals.push(new Animal(obj))
+      })
+    });
+  $.get('data/page-2.json', 'json')
+    .then(data => {
+      data.forEach(obj => {
+        allAnimals.push(new Animal(obj))
+      })
+    })
+    .then(Animal.loadAnimalsHorns)
+}
+
 Animal.loadAnimals = () => {
+  allAnimals.forEach(animal => {
+    $('#animals').append(animal.toHtml());
+    if (options.indexOf(animal.keyword) === -1) {
+      options.push(animal.keyword);
+      $('select').append(`<option value="${animal.keyword}">${animal.keyword}</option>`);
+    }
+  })
+}
+
+Animal.loadAnimalsTitle = () => {
+  allAnimals.sort(function(a, b) {
+    let titleA = a.title.toUpperCase();
+    let titleB = b.title.toUpperCase();
+    if (titleA < titleB) {
+      return -1;
+    }
+    if (titleA > titleB) {
+      return 1;
+    }
+    return 0;
+  });
+  allAnimals.forEach(animal => {
+    $('#animals').append(animal.toHtml());
+    if (options.indexOf(animal.keyword) === -1) {
+      options.push(animal.keyword);
+      $('select').append(`<option value="${animal.keyword}">${animal.keyword}</option>`);
+    }
+  })
+}
+
+Animal.loadAnimalsHorns = () => {
+  allAnimals.sort(function(a, b) {
+    return a.horns - b.horns;
+  });
   allAnimals.forEach(animal => {
     $('#animals').append(animal.toHtml());
     if (options.indexOf(animal.keyword) === -1) {
@@ -76,20 +121,36 @@ $('#page1').on('click', function() {
   $('div').remove();
   $('#page1').css('visibility', 'hidden');
   $('#page2').css('visibility', 'visible');
-  $(() => Animal.readJSON('data/page-1.json'));
   $('option:nth-child(1n+2)').remove();
   allAnimals = [];
   options = [];
+  $(() => Animal.readJSON('data/page-1.json'));
 });
 
 $('#page2').on('click', function() {
   $('div').remove();
   $('#page2').css('visibility', 'hidden');
   $('#page1').css('visibility', 'visible');
-  $(() => Animal.readJSON('data/page-2.json'));
   $('option:nth-child(1n+2)').remove();
   allAnimals = [];
   options = [];
+  $(() => Animal.readJSON('data/page-2.json'));
+});
+
+$('#sortTitle').on('click', function() {
+  $('div').remove();
+  $('option:nth-child(1n+2)').remove();
+  allAnimals = [];
+  options = [];
+  $(() => Animal.readJSONtitle());
+});
+
+$('#sortHorns').on('click', function() {
+  $('div').remove();
+  $('option:nth-child(1n+2)').remove();
+  allAnimals = [];
+  options = [];
+  $(() => Animal.readJSONhorns());
 });
 
 $(() => Animal.readJSON('data/page-1.json'));
